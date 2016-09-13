@@ -1,7 +1,7 @@
 #cloud-config
 
 # Set Hostname
-hostname: coreb1
+hostname: coreb2
 
 # include one or more SSH public keys
 ssh_authorized_keys:
