@@ -1,29 +1,14 @@
 #cloud-config
 
+# Set Hostname
+hostname: coreb1
+
 # include one or more SSH public keys
 ssh_authorized_keys:
-  - ssh-dss AAAAB3NzaC1kc3MAAACBALwW1MpMW/GAffDgGXbXn3MPvIzsHDoNMhviAgibe306chGs9+JeiGQ3cOqCxRmbPQ9RvH3FFC1sWh/4maJH6leZkBP0q7wQO8t8Vkvth1JCk++6mrWsaxA3DAAYkLdZmdt3WHdka2iuc77+mV/blnGZXV3zg6PvAFyXunpk4vTTAAAAFQD5lKJgvYfzvoneqzTgC5+irl7/LQAAAIBHSl1lFlauTJmRKVh1ex/5ctg7RAWei7fVvQqWcK2+FIbasPbIm8WkgQdodzJVrWB9ehZ+I6SofKh7PifHwNZxVy46fQSd9VHYPEduNin6H+Qh3SSDG02wpUjVIwC+w+EiiA6STwUuJDCv40fEhghTlGwS8cY4qKrUVLWS5bLcJgAAAIEAgql2kT3C1dUQNqDFBIIKGRDL6phbedbIhaxuShSNbSyskQJsGYYGFEGY8ldtH6vOlYZn9yFOBkCF/KGjuU4jolSvWGMtFrm8XQmp/GTyP/XN3hgDgG5/DQ9dHF8jLEJZLqZVAnHDTHiAvSf5QDiYWX3fy4Sewrtac2pC6piGomY= camposp@campospdesktop
+ssh-dss AAAAB3NzaC1kc3MAAACBALwW1MpMW/GAffDgGXbXn3MPvIzsHDoNMhviAgibe306chGs9+JeiGQ3cOqCxRmbPQ9RvH3FFC1sWh/4maJH6leZkBP0q7wQO8t8Vkvth1JCk++6mrWsaxA3DAAYkLdZmdt3WHdka2iuc77+mV/blnGZXV3zg6PvAFyXunpk4vTTAAAAFQD5lKJgvYfzvoneqzTgC5+irl7/LQAAAIBHSl1lFlauTJmRKVh1ex/5ctg7RAWei7fVvQqWcK2+FIbasPbIm8WkgQdodzJVrWB9ehZ+I6SofKh7PifHwNZxVy46fQSd9VHYPEduNin6H+Qh3SSDG02wpUjVIwC+w+EiiA6STwUuJDCv40fEhghTlGwS8cY4qKrUVLWS5bLcJgAAAIEAgql2kT3C1dUQNqDFBIIKGRDL6phbedbIhaxuShSNbSyskQJsGYYGFEGY8ldtH6vOlYZn9yFOBkCF/KGjuU4jolSvWGMtFrm8XQmp/GTyP/XN3hgDgG5/DQ9dHF8jLEJZLqZVAnHDTHiAvSf5QDiYWX3fy4Sewrtac2pC6piGomY= camposp@campospdesktop
 
 coreos:
   etcd2:
     # generate a new token for each unique cluster from https://discovery.etcd.io/new?size=3
     # specify the initial size of your cluster with ?size=X
     discovery: https://discovery.etcd.io/58b2cc853adc8ca5a0b8c82c8750ee44
-    advertise-client-urls: http://192.168.122.21:2379,http://192.168.122.21:4001
-    initial-advertise-peer-urls: http://192.168.122.21:2380
-    # listen on both the official ports and the legacy ports
-    # legacy ports can be omitted if your application doesn't depend on them
-    listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
-    listen-peer-urls: http://192.168.122.21:2380
-  units:
-    - name: etcd2.service
-      command: start
-    - name: fleet.service
-      command: start
-    - name: flanneld.service
-      command: start
-      drop-ins:
-      - name: 50-network-config.conf
-        content: |
-          [Service]
-          ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network":"192.168.122.0/24", "Backend": {"Type": "vxlan"}}'
