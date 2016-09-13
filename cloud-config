@@ -1,0 +1,31 @@
+#cloud-config
+
+coreos:
+etcd2:
+    # generate a new token for each unique cluster from https://discovery.etcd.io/new:
+    discovery: https://discovery.etcd.io/e8bb06747ae3411f0159784c27f020c9
+    # multi-region deployments, multi-cloud deployments, and Droplets without
+    # private networking need to use $public_ipv4:
+    advertise-client-urls: http://$private_ipv4:2379,http://$private_ipv4:4001
+    initial-advertise-peer-urls: http://$private_ipv4:2380
+    # listen on the official ports 2379, 2380 and one legacy port 4001:
+    listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
+    listen-peer-urls: http://$private_ipv4:2380
+  fleet:
+    public-ip: $private_ipv4   # used for fleetctl ssh command
+    units:
+      - name: etcd.service
+        command: start
+users:
+  - name: camposp
+    ssh-authorized-keys:
+      - ssh-dss AAAAB3NzaC1kc3MAAACBALwW1MpMW/GAffDgGXbXn3MPvIzsHDoNMhviAgibe306chGs9+JeiGQ3cOqCxRmbPQ9RvH3FFC1sWh/4maJH6leZkBP0q7wQO8t8Vkvth1JCk++6mrWsaxA3DAAYkLdZmdt3WHdka2iuc77+mV/blnGZXV3zg6PvAFyXunpk4vTTAAAAFQD5lKJgvYfzvoneqzTgC5+irl7/LQAAAIBHSl1lFlauTJmRKVh1ex/5ctg7RAWei7fVvQqWcK2+FIbasPbIm8WkgQdodzJVrWB9ehZ+I6SofKh7PifHwNZxVy46fQSd9VHYPEduNin6H+Qh3SSDG02wpUjVIwC+w+EiiA6STwUuJDCv40fEhghTlGwS8cY4qKrUVLWS5bLcJgAAAIEAgql2kT3C1dUQNqDFBIIKGRDL6phbedbIhaxuShSNbSyskQJsGYYGFEGY8ldtH6vOlYZn9yFOBkCF/KGjuU4jolSvWGMtFrm8XQmp/GTyP/XN3hgDgG5/DQ9dHF8jLEJZLqZVAnHDTHiAvSf5QDiYWX3fy4Sewrtac2pC6piGomY= camposp@campospdesktop
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    groups: sudo
+    shell: /bin/bash
+
+write_files:
+  - path: /etc/resolv.conf
+    content: |
+        nameserver 10.121.4.9
+        nameserver 10.121.4.23
