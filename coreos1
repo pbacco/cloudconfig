@@ -21,8 +21,9 @@ coreos:
 
 write_files:
 - path: /etc/hosts
-content: |
+  content: |
         127.0.0.1     localhost
         192.168.122.101          coreos1
         192.168.122.102          coreos2
         192.168.122.103          coreos3
+
