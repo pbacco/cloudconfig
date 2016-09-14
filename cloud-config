@@ -11,19 +11,19 @@ coreos:
     discovery: https://discovery.etcd.io/5a5e85aee8d88fff1ea2f5ef749744d7
     # multi-region and multi-cloud deployments need to use $public_ipv4
     # list of member’s client urls to advertise information to the rest of the cluster
-    advertise-client-urls: http://$public_ipv4:2379
+    advertise-client-urls: http://192.168.122.101:2379
     # this address is used to communicate etcd data around the cluster
-    initial-advertise-peer-urls: http://$private_ipv4:2380
+    initial-advertise-peer-urls: http://192.168.122.101:2380
     # listen on both the official ports and the legacy ports
     # legacy ports can be omitted if your application doesn't depend on them
     # url to listen for client traffic
-    listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
+    listen-client-urls: http://192.168.122.101:2379,http://127.0.0.1:4001
     # url to listen for peer traffic
-    listen-peer-urls: http://$private_ipv4:2380,http://$private_ipv4:7001
+    listen-peer-urls: http://192.168.122.101:2380,http://192.168.122.101:7001
   fleet:
-    public-ip: $public_ipv4
+    public-ip: 192.168.122.101
   flannel:
-    interface: $public_ipv4
+    interface: 192.168.122.101
   units:
     - name: etcd2.service
       command: start
