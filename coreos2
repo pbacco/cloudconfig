@@ -18,6 +18,14 @@ coreos:
         initial-cluster: "coreos1=http://192.168.122.101:2380,coreos2=http://192.168.122.102:2380,coreos3=http://192.168.122.103:2380"
         initial-cluster-state: "new"
 
+write_files:
+ - path: /etc/hosts
+     content: |
+        127.0.0.1     localhost
+        192.168.122.101          coreos1
+        192.168.122.102          coreos2
+        192.168.122.103          coreos3
+        
   fleet:
     public-ip: 192.168.122.102
   flannel:
