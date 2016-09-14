@@ -1,25 +1,20 @@
 #cloud-config
 
+hostname: "coreos1"
+
 # include one or more SSH public keys
 ssh_authorized_keys:
 - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRHszou88PKuVrmRTt2x5zRZyZIKD+vmehmH0Ivv0YyGRG8Ycqnl8bsJnvsoIEz++PXu36Q6zcLNlXBplHQXMB7LMknXmUp+BRZPobV96EDhd+LrumvGbnRcxR6I3pMX1Xz/Xct6ChQpOPUJQoEtYLUi+eyRBW2JjL/P3NwOmpMAd9mR340pvmcQ3h1BJXO2p4cjPBVqxvMX5oWFQpnXJa8qR6Sw4t+vG/C1eej9LLsi/K8L/bVYmkDHQokNAaJtPM1twU22htHMfHlZV2V+vZKqu2o1BTY7UsJ+EqVDkxZCN9vi7lhITmZ5yN4uYLc61Auy2GNndQf9cGHZw5UOh3 camposp@campospdesktop
 
 coreos:
   etcd2:
-    # generate a new token for each unique cluster from https://discovery.etcd.io/new?size=3
-    # specify the initial size of your cluster with ?size=X
-    discovery: https://discovery.etcd.io/5a5e85aee8d88fff1ea2f5ef749744d7
-    # multi-region and multi-cloud deployments need to use $public_ipv4
-    # list of member’s client urls to advertise information to the rest of the cluster
-    advertise-client-urls: http://192.168.122.101:2379
-    # this address is used to communicate etcd data around the cluster
-    initial-advertise-peer-urls: http://192.168.122.101:2380
-    # listen on both the official ports and the legacy ports
-    # legacy ports can be omitted if your application doesn't depend on them
-    # url to listen for client traffic
-    listen-client-urls: http://192.168.122.101:2379,http://127.0.0.1:4001
-    # url to listen for peer traffic
-    listen-peer-urls: http://192.168.122.101:2380,http://192.168.122.101:7001
+        advertise-client-urls: "http://192.168.122.101:2379"
+        initial-advertise-peer-urls: "http://192.168.122.101:2380"
+        listen-client-urls: "http://192.168.122.101:2379,http://127.0.0.1:2379"
+        listen-peer-urls: "http://192.168.122.101:2380"
+        initial-cluster: "coreos1=http://192.168.122.101:2380,coreos2=http://192.168.122.102:2380,coreos3=http://192.168.122.103:2380"
+        initial-cluster-state: "new"
+        
   fleet:
     public-ip: 192.168.122.101
   flannel:
