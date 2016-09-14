@@ -1,5 +1,4 @@
 #cloud-config
-
 hostname: "coreos2"
 
 # include one or more SSH public keys
@@ -19,19 +18,9 @@ coreos:
         initial-cluster-state: "new"
 
 write_files:
- - path: /etc/hosts
-     content: |
+- path: /etc/hosts
+  content: |
         127.0.0.1     localhost
         192.168.122.101          coreos1
         192.168.122.102          coreos2
         192.168.122.103          coreos3
-        
-  fleet:
-    public-ip: 192.168.122.102
-  flannel:
-    interface: 192.168.122.102
-  units:
-    - name: etcd2.service
-      command: start
-    - name: fleet.service
-      command: start
