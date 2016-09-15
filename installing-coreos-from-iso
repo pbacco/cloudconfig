@@ -1,0 +1,10 @@
+Install steps
+
+boot iso
+
+git clone "my cloudconfig repo"
+
+coreos-install -d /dev/sda -C stable -c path-to-config.yaml
+
+
+
