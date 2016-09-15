@@ -1,0 +1,31 @@
+#cloud-config
+hostname: "coreoskubectl"
+
+# include one or more SSH public keys
+ssh_authorized_keys:
+- ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRHszou88PKuVrmRTt2x5zRZyZIKD+vmehmH0Ivv0YyGRG8Ycqnl8bsJnvsoIEz++PXu36Q6zcLNlXBplHQXMB7LMknXmUp+BRZPobV96EDhd+LrumvGbnRcxR6I3pMX1Xz/Xct6ChQpOPUJQoEtYLUi+eyRBW2JjL/P3NwOmpMAd9mR340pvmcQ3h1BJXO2p4cjPBVqxvMX5oWFQpnXJa8qR6Sw4t+vG/C1eej9LLsi/K8L/bVYmkDHQokNAaJtPM1twU22htHMfHlZV2V+vZKqu2o1BTY7UsJ+EqVDkxZCN9vi7lhITmZ5yN4uYLc61Auy2GNndQf9cGHZw5UOh3 camposp@campospdesktop
+- ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDrDr0dnvr9w3cZOTD2DjYqXxiTUf3f8IqsKakshmJo5oh8YtWrXC2Jeg7+mlBMMlujUZ4blzosUOduD0e5sZjqaqy57ZJcjyeQcFQWqxnYZoFLwsWMkWIxmYaS76afWopLaAvSxuFnORVUcbynK/7oHK2O1JKXsv8GIG2MDIp1mV9wKykyGxoluj0DxVWGpSRUAD0UCL1nnI9biwnN+NGsPLUuBkisXyottpqIYyBeLOEXDOxTvItlHjzry+D6t/JY15O0FXGJfMh2cVo3Wh/oBLREFDA0p1XdQZYXt3oTXyXpiYZ4sr9ANhuvBFFPZxy5qA8iMz1ga1pRscnZI2P1 core@coreos3
+- ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDITwXG+ZjS1Bzid28MSM68d2DXlpnmZiEp23EaGeUEsPB9ZdhZsdKqGUl/LS3hocfHAmL4Ww9ntXELnMgKmcjLleKtbhYc8n+y0C40sX7YcOSC8PPzGfSAZ3QTgGr1azhlrY8s0/AQayI0O0DYcKZFOnnxHtveLz/BIh2QuRPcowaUDEn7VFxh9d7PvvjkY0cAJ0trYD9ETTyMCnaABn6MMRBpWZGhiK9UDStKQvI4a4fgjupv8ripAtLu6yfcuCIbtRkxYEqKr00nRDyO/PEZxbDakAYAoFKmnYJ1b6ERrdzVbACDznrOnauKcPlT1l6rSPyJ01tNTKlDNv9U1tNx core@coreos2
+- ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHMbgcOyWOY8cDSdhxXhoj0dZuQ8SMQioP+R83EAR1OzSs51REQN9B0qmo3hAhjJJp7+vlCg2xZ6s6YOzqbpof1qJQF5AmzOAY9T2FSIAZc+D5eRdphX/5agPqx3AXvlWpIJhJVoIC2F6t1yjpzyidNy/EfPAnhexjnJcRBJnf7QBKQvlHqPxnYWKwis0wF6CzYBR7GkLnCg7/oL8IJjCy+jAf8Du/fTtGVdChIXwmsEUKhXfId1fWZdV6JpQhTAAEX3FSKnz/V0KWdNlHfKbPGpFryJgqVZFhTzNqh/W2M6By2ncY2OHaTVKlOnm+ffMJDy18kQ+38R33fmFiSQ1N core@coreos1
+- ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDEKtXrrD6Jra/b7fTn0Zwy+/XpX2IgmdNK2IyBRNMUNggbBtlT2RsmmcOSEJnKE4l/gvjFQjUwyq09+eUquvA9RaQ8p4IdFx0Ko9EigoxvZYxvKnUa9C7TK/JhUQN3npxv0+qWkIbiL2TnI+98B8mbD/XnfzxBI88jLLGWMmo4PKBNZlplD1sRI+fnCh4FJZStUteCNBDq8/RdK28xi/fg9MFjmvfkdATJ2CmceHwNRECGWQIeL4cJcMfUN3E1EeXJQXdfbGMXS8kHhUIEHKb5yeCtOtEo62KgDHv6aEw+WBONA2HiBqZ68PLDgP21XFI4Sz4mPUDzomZ/oCHHz2A9 core@coreoskubectl
+
+write_files:
+- path: /etc/hosts
+  content: |
+        127.0.0.1     localhost
+        192.168.122.101          coreos1
+        192.168.122.102          coreos2
+        192.168.122.103          coreos3
+        192.168.122.104          coreoskubectl
+
+write_files:
+- path: /etc/systemd/network/static.network
+  content: |
+        [Match]
+        Name=ens3
+
+        [Network]
+        DNS=10.121.4.9
+        Address=192.168.122.104/24
+        Gateway=192.168.122.1
+
