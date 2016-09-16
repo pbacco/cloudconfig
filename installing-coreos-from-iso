@@ -17,3 +17,9 @@ sudo journalctl -f -t etcd2
 sudo systemctl status etcd2.service
 
 
+install kubernets
+https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-kubernetes-on-top-of-a-coreos-cluster
+fix docker errors https://github.com/coreos/flannel/issues/450
+
+
+
