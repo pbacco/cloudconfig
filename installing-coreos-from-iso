@@ -6,6 +6,9 @@ git clone "my cloudconfig repo"
 
 coreos-install -d /dev/sda -C stable -c path-to-config.yaml
 
+ update_engine_client -check_for_update
+
+
 
 Changing settings sudo /usr/bin/coreos-cloudinit --from-file=/var/lib/coreos-install/user_data
 
